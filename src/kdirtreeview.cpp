@@ -15,6 +15,7 @@
 #include <QStyledItemDelegate>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
+#include <QStorageInfo>
 #include <qcolor.h>
 #include <qmenu.h>
 #include <qtimer.h>
@@ -161,6 +162,9 @@ public:
         !_orig->isExcluded()) // not if this is an excluded object (dir)
       {
         return formatPercent(100. * _orig->totalSize() / _orig->parent()->totalSize());
+      } else if(_orig->parent() == nullptr) {
+        QStorageInfo i(_orig->url());
+        return i.isValid() ? formatSize(i.bytesFree()) + " free" : "";
       } else {
         return "";
       }
